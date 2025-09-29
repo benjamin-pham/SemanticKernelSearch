@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.AI;
-using System.Linq;
 using WebHost.Repositories;
 using static WebHost.Repositories.ProductRepository;
 
@@ -22,9 +21,9 @@ public static class InsertProductEndpoint
                 request.Name,
                 request.Description,
                 request.Tags,
-                NormalizeVector.Handle(nameEmbedding),
-                NormalizeVector.Handle(descriptionEmbedding),
-                NormalizeVector.Handle(tagsEmbedding));
+                nameEmbedding,
+                descriptionEmbedding,
+                tagsEmbedding);
             await productRepository.InsertAsync(productModel);
         }).WithTags("Product");
     }

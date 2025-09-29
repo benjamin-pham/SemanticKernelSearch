@@ -12,14 +12,13 @@ public static class SearchSimilarProductEndpoint
             IEmbeddingGenerator<string, Embedding<float>> embeddingGenerator) =>
         {
             var embedding = await embeddingGenerator.GenerateAsync(request.Text);
-            var normalizeVector = NormalizeVector.Handle(embedding.Vector.ToArray());
-            var dataResult = await productRepository.SearchSimilarAsync(normalizeVector);
+            var dataResult = await productRepository.SearchSimilarAsync(embedding.Vector.ToArray());
             var apiResult = dataResult.Select((product, index) =>
                 new SearchSimilarProductResponse(
-                    index,
-                    product.Id,
-                    product.Name,
-                    product.Similarity))
+                    Index: index,
+                    Id: product.Id,
+                    Name: product.Name,
+                    Similarity: product.Similarity))
             .ToList();
             return apiResult;
         }).WithTags("Product");

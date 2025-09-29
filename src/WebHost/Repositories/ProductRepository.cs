@@ -39,12 +39,12 @@ public class ProductRepository(string connString)
                 SELECT id, name,         
                     (0.5 * (1 - (embedding_name <=> @vec::vector)) +
                     0.3 * (1 - (embedding_description <=> @vec::vector)) +
-                    0.2 * (1 - (embedding_tags <=> @vec::vector))) AS score
+                    0.2 * (1 - (embedding_tags <=> @vec::vector))) AS similarity
                 FROM products
             )
-            SELECT id, name, score AS Similarity
+            SELECT id, name, similarity
             FROM tbl
-            ORDER BY score DESC
+            ORDER BY similarity DESC
             LIMIT @limit;
         """;
 
